@@ -86,8 +86,10 @@ def inbox(ws):
 @sockets.route('/receive')
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
-    path = ws.environ
-    app.logger.debug(u'full path of ws: {}'.format(path))
+    request = ws.environ.get('werkzeug.request')
+    args = request.args
+    session = request.args.get('session', "")
+    app.logger.debug(u'full path of ws: {} {}'.format(session, request))
     chats.register(ws)
 
     while not ws.closed:
