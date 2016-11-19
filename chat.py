@@ -61,6 +61,12 @@ class ChatBackend(object):
 
     def start(self):
         """Maintains Redis subscription in the background."""
+        print("Log print")
+        app.logger.info(u'Logger.info!')
+        app.logger.verbose(u'Logger.verbose!')
+        app.logger.debug(u'Logger.debug!')
+        app.logger.error(u'Logger.error!')
+        print("Log done: start!")
         gevent.spawn(self.run)
 
 chats = ChatBackend()
