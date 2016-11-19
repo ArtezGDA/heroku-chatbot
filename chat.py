@@ -61,11 +61,6 @@ class ChatBackend(object):
 
     def start(self):
         """Maintains Redis subscription in the background."""
-        print("Log print")
-        app.logger.info(u'Logger.info!')
-        app.logger.debug(u'Logger.debug!')
-        app.logger.error(u'Logger.error!')
-        print("Log done: start!")
         gevent.spawn(self.run)
 
 chats = ChatBackend()
@@ -91,6 +86,7 @@ def inbox(ws):
 @sockets.route('/receive')
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
+    app.logger.debug(u'full path of ws: {}'.ws)
     chats.register(ws)
 
     while not ws.closed:
