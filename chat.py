@@ -92,7 +92,7 @@ def inbox(ws):
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
     session = sessionID(ws)
-    app.logger.debug(u'session id for outbox: {}'.format(session)
+    app.logger.debug(u'session id for outbox: {}'.format(session))
     chats.register(ws, session)
 
     while not ws.closed:
