@@ -60,9 +60,10 @@ class ChatBackend(object):
         for data in self.__iter_data():
             for session in self.clients.keys():
                 # Only send the data if it meant of the same session as the client
+                # Or if the client is listening to all (session = "")
                 messageDict = json.loads(data)
                 messageSession = messageDict['session']
-                if session == messageSession:
+                if session == "" or session == messageSession:
                     gevent.spawn(self.send, self.clients[session], data)
 
     def start(self):
