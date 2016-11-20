@@ -103,7 +103,8 @@ def inbox(ws):
             app.logger.info(u'Inserting message: {}'.format(message))
             
             # Store the chat in the database
-            storeChat("1234", 0, message)
+            # TODO: not only use agent 0
+            storeChat(data['session'], 0, data['text'])
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
