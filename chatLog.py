@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
 class Message(db.Model):
-    __tablename__ = "messages"
+    __tablename__ = "chat_messages"
     id = db.Column(db.Integer, primary_key=True)
     session = db.Column(db.String(60))
     date = db.Column(db.DateTime())
@@ -27,7 +27,9 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Session: %s, Actor %d: Message %s>' % (self.session, self.actor, self.message)
-    
+
+def start()
+    db.create_all
 
 def storeChat(session, actor, message):
     """docstring for storeChat."""
