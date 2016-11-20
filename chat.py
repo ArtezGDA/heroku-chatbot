@@ -30,7 +30,7 @@ class ChatBackend(object):
     """Interface for registering and updating WebSocket clients."""
 
     def __init__(self):
-        self.clients = list()
+        self.clients = dict()
         self.pubsub = redis.pubsub()
         self.pubsub.subscribe(REDIS_CHAN)
 
@@ -41,9 +41,9 @@ class ChatBackend(object):
                 app.logger.info(u'Sending message: {}'.format(data))
                 yield data
 
-    def register(self, client):
+    def register(self, client, sessionID):
         """Register a WebSocket connection for Redis updates."""
-        self.clients.append(client)
+        self.clients[sessionID] = client
 
     def send(self, client, data):
         """Send given data to the registered client.
@@ -51,13 +51,16 @@ class ChatBackend(object):
         try:
             client.send(data)
         except Exception:
-            self.clients.remove(client)
+            # Remove the client from the dictionary
+            self.clients = {key: value for key, value in self.clients.items() if value is not client}
 
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
         for data in self.__iter_data():
-            for client in self.clients:
-                gevent.spawn(self.send, client, data)
+            for session in self.clients.keys():
+                # Only send the data if it meant of the same session as the client
+                if session == data.get('session'):
+                    gevent.spawn(self.send, self.clients[session], data)
 
     def start(self):
         """Maintains Redis subscription in the background."""
@@ -80,21 +83,25 @@ def inbox(ws):
         message = ws.receive()
 
         if message:
+            session = sessionID(ws)
+            message['session'] = session
             app.logger.info(u'Inserting message: {}'.format(message))
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
-    request = ws.environ.get('werkzeug.request')
-    args = request.args
-    session = request.args.get('session', "")
-    app.logger.debug(u'full path of ws: {} {}'.format(session, request))
-    chats.register(ws)
+    session = sessionID(ws)
+    app.logger.debug(u'session id for outbox: {}'.format(session)
+    chats.register(ws, session)
 
     while not ws.closed:
         # Context switch while `ChatBackend.start` is running in the background.
         gevent.sleep(0.1)
 
-
-
+def sessionID(ws):
+    """Returns the sessionID, given as url parameter to the request."""
+    request = ws.environ.get('werkzeug.request')
+    session = request.args.get('session', "")
+    return session
+    
