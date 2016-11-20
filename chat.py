@@ -15,7 +15,7 @@ import gevent
 from flask import Flask, render_template
 from flask_sockets import Sockets
 
-from chatLog import storeChat
+from chatLog import storeChat, listAllChats
 
 REDIS_URL = os.environ['REDIS_URL']
 REDIS_CHAN = 'chat'
@@ -80,6 +80,11 @@ chats.start()
 def hello():
     return render_template('index.html')
 
+@app.route('/logs')
+def all_logs():
+    allLogs = listAllChats()
+    return render_template('logs.html', logs = allLogs)
+
 @sockets.route('/submit')
 def inbox(ws):
     """Receives incoming chat messages, inserts them into Redis."""
@@ -98,7 +103,7 @@ def inbox(ws):
             app.logger.info(u'Inserting message: {}'.format(message))
             
             # Store the chat in the database
-            storeChat(0, 0, 0, message)
+            storeChat("1234", 0, message)
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
