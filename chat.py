@@ -61,9 +61,10 @@ class ChatBackend(object):
             for session in self.clients.keys():
                 # Only send the data if it meant of the same session as the client
                 # Or if the client is listening to all (session = "")
+                # Or if the message is to be broadcasted (session = "broadcast")
                 messageDict = json.loads(data)
                 messageSession = messageDict['session']
-                if session == "" or session == messageSession:
+                if session == "" or messageSession == "broadcast" or session == messageSession:
                     gevent.spawn(self.send, self.clients[session], data)
 
     def start(self):
@@ -89,6 +90,9 @@ def inbox(ws):
         if message:
             data = json.loads(message)
             data['session'] = sessionID(ws)
+            # With the handle * , the message will be broadcasted
+            if data['handle'] == "*":
+                data['session'] = "broadcast"
             message = json.dumps(data)
             app.logger.info(u'Inserting message: {}'.format(message))
             redis.publish(REDIS_CHAN, message)
