@@ -30,7 +30,7 @@ class Message(db.Model):
     
 
 def storeChat(session, actor, message):
-    """docstring for storeChat"""
+    """docstring for storeChat."""
     app.logger.info(u'Storing message: {}'.format(message))
     now = datetime.datetime.now()
     newMessage = Message(session, now, actor, message)
