@@ -84,8 +84,8 @@ def inbox(ws):
 
         if message:
             session = sessionID(ws)
-            message['session'] = session
-            app.logger.info(u'Inserting message: {}'.format(message))
+            message = message[:-1] + ',"session":"{}"}'.format(session)
+            app.logger.info(u'Inserting message: {} in session {}'.format(message, session))
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
