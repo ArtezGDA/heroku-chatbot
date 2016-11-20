@@ -15,6 +15,7 @@ import gevent
 from flask import Flask, render_template
 from flask_sockets import Sockets
 
+from chatLog import storeChat
 
 REDIS_URL = os.environ['REDIS_URL']
 REDIS_CHAN = 'chat'
@@ -95,6 +96,9 @@ def inbox(ws):
                 data['session'] = "broadcast"
             message = json.dumps(data)
             app.logger.info(u'Inserting message: {}'.format(message))
+            
+            # Store the chat in the database
+            storeChat(0, 0, 0, message)
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
