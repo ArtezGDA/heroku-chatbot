@@ -8,6 +8,7 @@ This simple application uses WebSockets to run a primitive chat server.
 """
 
 import os
+import json
 import logging
 import redis
 import gevent
@@ -59,7 +60,9 @@ class ChatBackend(object):
         for data in self.__iter_data():
             for session in self.clients.keys():
                 # Only send the data if it meant of the same session as the client
-                if session == data.get('session'):
+                messageDict = json.loads(data)
+                messageSession = messageDict['session']
+                if session == messageSession:
                     gevent.spawn(self.send, self.clients[session], data)
 
     def start(self):
@@ -83,9 +86,10 @@ def inbox(ws):
         message = ws.receive()
 
         if message:
-            session = sessionID(ws)
-            message = message[:-1] + ',"session":"{}"'.format(session) + "}"
-            app.logger.info(u'Inserting message: {} in session {}'.format(message, session))
+            data = json.loads(message)
+            data['session'] = sessionID(ws)
+            message = json.dumps(data)
+            app.logger.info(u'Inserting message: {}'.format(message))
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
