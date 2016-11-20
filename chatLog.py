@@ -28,8 +28,8 @@ class Message(db.Model):
     def __repr__(self):
         return '<Session: %s, Actor %d: Message %s>' % (self.session, self.actor, self.message)
 
-def start()
-    db.create_all
+def start():
+    db.create_all()
 
 def storeChat(session, actor, message):
     """docstring for storeChat."""
