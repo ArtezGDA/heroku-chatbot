@@ -57,8 +57,7 @@ def sessionFromIntrospection():
     except ValueError:
         return "Session-NotFound-ToDeep"
     if caller:
-        session = caller.f_locals.get('session', "Session-NotFound-NoLocalVariable")
-        print "Introspected session: {}".format(session)
+        session = caller.f_locals.get('session', "Session-NotFound-NoLocalVar")
         return session
     return "Session-NotFound-NoCaller"
 

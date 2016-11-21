@@ -41,7 +41,6 @@ class ChatBackend(object):
         for message in self.pubsub.listen():
             data = message.get('data')
             if message['type'] == 'message':
-                app.logger.info(u'Sending message: {}'.format(data))
                 yield data
 
     def register(self, client, sessionID):
