@@ -115,7 +115,8 @@ def inbox(ws):
             storeChat(data['session'], 0, data['text'])
             redis.publish(REDIS_CHAN, message)
             
-            # After a second, send a response
+            # After two seconds, send a response
+            gevent.sleep(2.0)
             response = "Ok. Thanks."
             storeChat(session, 1, response)
             data = {}
