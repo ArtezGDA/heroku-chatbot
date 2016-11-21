@@ -50,7 +50,7 @@ def sessionFromIntrospection():
     try:
         while True:
             caller = sys._getframe(callDepth)
-            callerFile = os.path.splitext(caller.f_code.co_filename)[0]
+            callerFile = os.path.splitext(os.path.basename(caller.f_code.co_filename))[0]
             print callerFile
             if callerFile == selfFile:
                 break
