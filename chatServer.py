@@ -19,7 +19,7 @@ redis = redis.from_url(REDIS_URL)
 
 # Chat Server Framework functions
 
-def sleepx(n):
+def sleep(n):
     """Sleep n number of seconds.
     Pauses the execution of the program.
     """

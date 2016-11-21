@@ -2,14 +2,14 @@
 
 # Default bot template
 
-from chatServer import sleepx, output
+import chatServer as c
 
 def setup():
-    output("This is the bot template.")
-    sleepx(1)
-    output('It does nothing more than just responding with "Ok".')
+    c.output("This is the bot template.")
+    c.sleep(1)
+    c.output('It does nothing more than just responding with "Ok".')
     
 def response(input):
-    sleepx(1)
+    c.sleep(1)
     print(input)
-    output("Ok")
+    c.output("Ok")
