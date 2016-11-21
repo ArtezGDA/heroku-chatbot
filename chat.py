@@ -95,16 +95,34 @@ def inbox(ws):
 
         if message:
             data = json.loads(message)
-            data['session'] = sessionID(ws)
+            
+            # Get the handle
+            handle = data['handle']
+            
+            # Set the session
+            session = sessionID(ws)
+            data['session'] = session
             # With the handle * , the message will be broadcasted
-            if data['handle'] == "*":
+            if handle == "*":
                 data['session'] = "broadcast"
             message = json.dumps(data)
-            app.logger.info(u'Inserting message: {}'.format(message))
+            
+            # Log this message
+            app.logger.info(u'Inserting message by {}: {}'.format(handle, message))
             
             # Store the chat in the database
             # TODO: not only use agent 0
             storeChat(data['session'], 0, data['text'])
+            redis.publish(REDIS_CHAN, message)
+            
+            # After a second, send a response
+            response = "Ok. Thanks."
+            storeChat(session, 1, response)
+            data = {}
+            data['handle'] = "bot"
+            data['text'] = response
+            data['session'] = session
+            message = json.dumps(data)
             redis.publish(REDIS_CHAN, message)
 
 @sockets.route('/receive')
