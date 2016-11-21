@@ -3,6 +3,7 @@
 # Heroku Flask Websockets version
 
 import os
+import sys
 import json
 import redis
 import gevent
