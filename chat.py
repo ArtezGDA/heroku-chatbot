@@ -16,6 +16,7 @@ from flask import Flask, render_template
 from flask_sockets import Sockets
 
 from chatLog import storeChat, listAllChats
+import chatServer
 
 REDIS_URL = os.environ['REDIS_URL']
 REDIS_CHAN = 'chat'
@@ -46,6 +47,8 @@ class ChatBackend(object):
     def register(self, client, sessionID):
         """Register a WebSocket connection for Redis updates."""
         self.clients[sessionID] = client
+        # Run the bot setup
+        chatServer.bot_setup(sessionID)
 
     def send(self, client, data):
         """Send given data to the registered client.
@@ -98,6 +101,8 @@ def inbox(ws):
             
             # Get the handle
             handle = data['handle']
+            # Get the message text
+            humanText = data['text']
             
             # Set the session
             session = sessionID(ws)
@@ -111,26 +116,17 @@ def inbox(ws):
             app.logger.info(u'Inserting message by {}: {}'.format(handle, message))
             
             # Store the chat in the database
-            # TODO: not only use agent 0
-            storeChat(data['session'], 0, data['text'])
+            # actor 0  =  me
+            storeChat(data['session'], 0, humanText)
             redis.publish(REDIS_CHAN, message)
             
-            # After two seconds, send a response
-            gevent.sleep(2.0)
-            response = "Ok. Thanks."
-            storeChat(session, 1, response)
-            data = {}
-            data['handle'] = "bot"
-            data['text'] = response
-            data['session'] = session
-            message = json.dumps(data)
-            redis.publish(REDIS_CHAN, message)
+            # Have the bot prepare a response
+            chatServer.bot_response(session, humanText):
 
 @sockets.route('/receive')
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
     session = sessionID(ws)
-    app.logger.debug(u'session id for outbox: {}'.format(session))
     chats.register(ws, session)
 
     while not ws.closed:
