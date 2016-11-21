@@ -121,7 +121,7 @@ def inbox(ws):
             redis.publish(REDIS_CHAN, message)
             
             # Have the bot prepare a response
-            chatServer.bot_response(session, humanText):
+            chatServer.bot_response(session, humanText)
 
 @sockets.route('/receive')
 def outbox(ws):
