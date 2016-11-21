@@ -55,12 +55,12 @@ def sessionFromIntrospection():
                 break
             callDepth += 1
     except ValueError:
-        return ""
+        return "Session-NotFound-ToDeep"
     if caller:
         session = caller.f_locals.get('session', "")
         print "Introspected session: {}".format(session)
         return session
-    return ""
+    return "Session-NotFound-NoCaller"
 
 
 # Heroku Flask functions
