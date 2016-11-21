@@ -45,7 +45,7 @@ def output(s):
 
 def sessionFromIntrospection():
     selfFile = os.path.splitext(os.path.basename(__file__))[0]
-    callDepth = 1
+    callDepth = 2
     caller = None
     try:
         while True:
@@ -57,7 +57,7 @@ def sessionFromIntrospection():
     except ValueError:
         return "Session-NotFound-ToDeep"
     if caller:
-        session = caller.f_locals.get('session', "")
+        session = caller.f_locals.get('session', "Session-NotFound-NoLocalVariable")
         print "Introspected session: {}".format(session)
         return session
     return "Session-NotFound-NoCaller"
