@@ -44,13 +44,13 @@ def output(s):
 # Get the session from python introspection
 
 def sessionFromIntrospection():
-    selfFile = os.path.basename(__file__)
+    selfFile = os.path.splitext(os.path.basename(__file__))[0]
     callDepth = 1
     caller = None
     try:
         while True:
             caller = sys._getframe(callDepth)
-            callerFile = caller.f_code.co_filename
+            callerFile = os.path.splitext(caller.f_code.co_filename)[0]
             print callerFile
             if callerFile == selfFile:
                 break
