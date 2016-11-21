@@ -51,12 +51,13 @@ def sessionFromIntrospection():
         while True:
             caller = sys._getframe(callDepth)
             callerFile = caller.f_code.co_filename
+            print callerFile
             if callerFile == selfFile:
                 break
             callDepth += 1
     except ValueError:
-        print "Cannot go deeper than {}".format(callDepth)
-        return = ""
+        print "Cannot go deeper than {} - {}".format(callDepth, selfFile)
+        return ""
     if caller:
         session = caller.f_locals.get('session', "")
         return session
