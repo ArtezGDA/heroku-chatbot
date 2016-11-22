@@ -18,7 +18,7 @@
       <div id="chat-log">
 		<ul>
 		  {% for chat in logs %}
-		  <li>Session: {{ chat.session }} Message: <em>{{ chat.message }}</em></li>
+		  <li>Session: {{ chat.session }} Date: {{ chat.date }} From: {{ chat.actor }} Message: <em>{{ chat.message }}</em></li>
 		  {% endfor %}	
 		</ul>
       </div>

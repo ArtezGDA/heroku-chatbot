@@ -42,4 +42,4 @@ def storeChat(session, actor, message):
 def listAllChats():
     """docstring for listAllChats"""
     all_chats = Message.query.all()
-    return [{'session': c.session, 'message': c.message } for c in all_chats]
+    return [{'session': c.session, 'message': c.message, 'actor': c.actor, 'date': c.date } for c in all_chats]
