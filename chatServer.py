@@ -9,7 +9,7 @@ import redis
 import gevent
 from chatLog import storeChat
 
-import bot as bot
+import rogerbot as bot
 
 
 REDIS_URL = os.environ['REDIS_URL']
