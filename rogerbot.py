@@ -60,9 +60,8 @@ def orderedAssignmentDetails():
         "Design a chatbot!",
         "The assignment is to Design a Chatbot.",
         "A Chatbot. And you have to design its interactions.",
-        """Read more about this
-        <a href="{}{}{}">Design a Chatbot Assignment</a>
-        .""".format(scheme, githubRepo, pageLink),
+        """Read more about this Design a Chatbot Assignment
+        at {}{}{}""".format(scheme, githubRepo, pageLink),
         "Make this chatbot more interesting.",
     ]
     if assignmentOrder < len(answers):
