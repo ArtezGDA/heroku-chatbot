@@ -20,6 +20,7 @@ import chatServer
 
 REDIS_URL = os.environ['REDIS_URL']
 REDIS_CHAN = 'chat'
+REDIS_SESSION = 'session'
 
 app = Flask(__name__)
 app.debug = 'DEBUG' in os.environ
@@ -47,7 +48,9 @@ class ChatBackend(object):
         """Register a WebSocket connection for Redis updates."""
         self.clients[sessionID] = client
         # Run the bot setup
-        chatServer.bot_setup(sessionID)
+        newSession = redis.sadd(REDIS_SESSION, sessionID)
+        if newSession:
+            chatServer.bot_setup(sessionID)
 
     def send(self, client, data):
         """Send given data to the registered client.
