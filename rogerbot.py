@@ -14,6 +14,12 @@ def sleep(n):
 def output(s):
     c.output(s)
 
+# Global variables.
+# TODO: would be better to get these from the REDIS session store
+global askedCounter, assignmentOrder
+askedCounter = 0
+assignmentOrder = 0
+
 
 # Setup and Response function
 def setup():
