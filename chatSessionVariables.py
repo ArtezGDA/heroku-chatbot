@@ -14,8 +14,7 @@ import os
 import redis
 import inspect
 
-# REDIS_URL = os.environ['REDIS_URL']
-REDIS_URL = 'redis://localhost:6379'
+REDIS_URL = os.environ['REDIS_URL']
 GLOBALS_KEY = 'globals'
 
 redis = redis.from_url(REDIS_URL)
