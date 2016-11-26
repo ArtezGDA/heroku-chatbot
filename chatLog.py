@@ -48,7 +48,7 @@ def listAllChats():
     for chat in all_chats:
         # Do we already have this session?
         if chat.session in sessionIDs:
-            sessionIndex = session.index(chat.session)
+            sessionIndex = sessionIDs.index(chat.session)
             session = sessions[sessionIndex]
         else:
             # Add this session
