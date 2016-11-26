@@ -47,13 +47,13 @@ def listAllChats():
     # Organize per sessions
     for chat in all_chats:
         # Do we already have this session?
-        if c.session in sessionIDs:
-            sessionIndex = session.index(c.session)
+        if chat.session in sessionIDs:
+            sessionIndex = session.index(chat.session)
             session = sessions[sessionIndex]
         else:
             # Add this session
-            session = {'id': c.session, 'messages': [], 'startDate': chat.date, 'lastDate': chat.date}
-            sessionIDs.append(c.session)
+            session = {'id': chat.session, 'messages': [], 'startDate': chat.date, 'lastDate': chat.date}
+            sessionIDs.append(chat.session)
             sessions.append(session)
             session = sessions[-1]
         # Update the start or last date of the session, if necessary
