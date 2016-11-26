@@ -42,4 +42,32 @@ def storeChat(session, actor, message):
 def listAllChats():
     """docstring for listAllChats"""
     all_chats = Message.query.all()
-    return [{'session': c.session, 'message': c.message, 'actor': c.actor, 'date': c.date } for c in all_chats]
+    sessionIDs = []
+    sessions = []
+    # Organize per sessions
+    for chat in all_chats:
+        # Do we already have this session?
+        if c.session in sessionIDs:
+            sessionIndex = session.index(c.session)
+            session = sessions[sessionIndex]
+        else:
+            # Add this session
+            session = {'id': c.session, 'messages': [], 'startDate': chat.date, 'lastDate': chat.date}
+            sessionIDs.append(c.session)
+            sessions.append(session)
+            session = sessions[-1]
+        # Update the start or last date of the session, if necessary
+        if chat.date < session['startDate']:
+            session['startDate'] = chat.date
+        if chat.date > session['lastDate']:
+            session['lastDate'] = chat.date
+        # Append the message
+        if actor == 0:
+            style = "me"
+        elif actor == 1:
+            style = "bot"
+        else:
+            style = ""
+        message = {'text': chat.message, 'date': chat.date, 'style': style}
+        session['messages'].append(message)
+    return sessions
