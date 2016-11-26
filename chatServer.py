@@ -7,6 +7,7 @@ import sys
 import json
 import redis
 import gevent
+import chatSessionVariables as sessionVars
 from chatLog import storeChat
 
 import rogerbot as bot
@@ -66,8 +67,18 @@ def sessionFromIntrospection():
 
 def bot_setup(session):
     """Runs the setup function in the bot"""
+    # Setup
+    # Pre-setup we're not interested in the bot's global variables.
     bot.setup()
+    # After setup we need to capture the state of the global vars
+    sessionVars.storeGlobals(bot, session)
     
 def bot_response(session, message):
-    """Let's the bot create a response for the given message"""
+    """Lets the bot create a response for the given message"""
+    #
+    # Before responding, we need to inject the session state
+    sessionVars.injectGlobals(bot, session)
     bot.response(message)
+    # After responding, capture the global vars for the session state
+    sessionVars.storeGlobals(bot, session)
+    
