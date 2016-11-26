@@ -33,7 +33,6 @@ def storeGlobals(bot, withSession):
                 if not inspect.ismodule(value):
                     #
                     # This is the list of global variables
-                    print key, type(value), value
                     storeVariable(withSession, key, type(value), value)
 
 
