@@ -62,9 +62,9 @@ def listAllChats():
         if chat.date > session['lastDate']:
             session['lastDate'] = chat.date
         # Append the message
-        if actor == 0:
+        if chat.actor == 0:
             style = "me"
-        elif actor == 1:
+        elif chat.actor == 1:
             style = "bot"
         else:
             style = ""
