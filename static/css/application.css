@@ -2,3 +2,9 @@
   overflow: auto;
   height: 500px;
 }
+span.me {
+    color: #aaa;
+}
+span.bot {
+    color: #33e;
+}
