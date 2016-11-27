@@ -18,10 +18,10 @@
       </div>
       <div id="chat-log">
 		{% for session in logs %}
-		  <h4>Session: <code>{{ session.id }}</code> <em>Started:</em> {{ session.startDate }}<em>, Last message:</em> {{ session.lastDate }}</h4>
+		  <h4>Session: <code>{{ session.id }}</code> Started: <em>{{ session.startDate }}</em>, Last message: <em>{{ session.lastDate }}</em></h4>
 		  <ul>
 			{% for message in session.messages %}
-			  <li>Date: {{ message.date }} <span class="{{ message.style }}">{{ message.text }}</span></li>
+			  <li><span class="label">Date: </span><span class="value">{{ message.date }} </span><span class="{{ message.style }}">{{ message.text }}</span></li>
 			{% endfor %}	
 	      </ul>
 		{% endfor %}

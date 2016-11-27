@@ -2,8 +2,14 @@
   overflow: auto;
   height: 500px;
 }
-span.me {
+span.label {
+    color: #ccc;
+}
+span.value {
     color: #aaa;
+}
+span.me {
+    color: #999;
 }
 span.bot {
     color: #33e;
