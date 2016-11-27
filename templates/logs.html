@@ -18,7 +18,7 @@
       </div>
       <div id="chat-log">
 		{% for session in logs %}
-		  <h4>Session: <code>{{ session.id }}</code> Started: <em>{{ session.startDate }}</em>, Last message: <em>{{ session.lastDate }}</em></h4>
+		  <h4 data-startOrder="{{ session.startOrder }}" data-recentOrder="{{ session.recentOrder }}">Session: <code>{{ session.id }}</code> Started: <em>{{ session.startDate }}</em>, Last message: <em>{{ session.lastDate }}</em></h4>
 		  <ul>
 			{% for message in session.messages %}
 			  <li><span class="keyName">Date: </span><span class="value">{{ message.date }} </span><span class="{{ message.style }}">{{ message.text }}</span></li>

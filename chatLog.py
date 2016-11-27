@@ -3,13 +3,17 @@
 import os
 import logging
 import datetime
+from operator import itemgetter
+
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.debug = 'DEBUG' in os.environ
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
+
 
 class Message(db.Model):
     __tablename__ = "chat_messages"
@@ -28,8 +32,10 @@ class Message(db.Model):
     def __repr__(self):
         return '<Session: %s, Actor %d: Message %s>' % (self.session, self.actor, self.message)
 
+
 def start():
     db.create_all()
+
 
 def storeChat(session, actor, message):
     """docstring for storeChat."""
@@ -38,6 +44,7 @@ def storeChat(session, actor, message):
     newMessage = Message(session, now, actor, message)
     db.session.add(newMessage)
     db.session.commit()
+
     
 def listAllChats():
     """docstring for listAllChats"""
@@ -68,6 +75,15 @@ def listAllChats():
             style = "bot"
         else:
             style = ""
-        message = {'text': chat.message, 'date': chat.date, 'style': style}
+        message = {'text': chat.message, 'date': chat.date.strftime("%a %d-%b-%Y %H:%M:%S"), 'style': style}
         session['messages'].append(message)
-    return sessions
+    # Order the sessions by start date
+    orderedSessions = sorted(sesions, key=itemgetter('startDate'))
+    for index, session in enumerate(orderedSessions):
+        session['startOrder'] = index
+    # Order the sessions by most recent
+    mostrecentSessions = sorted(sesions, key=itemgetter('lastDate'))
+    for index, sesion in enumerate(mostrecentSessions):
+        session['recentOrder'] = index
+    # Return the ordered set
+    return orderedSessions
