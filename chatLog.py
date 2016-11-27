@@ -4,7 +4,7 @@ import os
 import logging
 import datetime
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy, desc
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.debug = 'DEBUG' in os.environ
@@ -41,7 +41,7 @@ def storeChat(session, actor, message):
     
 def listAllChats():
     """docstring for listAllChats"""
-    all_chats = Message.query.order_by(desc(Message.date)).all()
+    all_chats = Message.query.order_by(Message.date.desc()).all()
     sessionIDs = []
     sessions = []
     # Organize per sessions
