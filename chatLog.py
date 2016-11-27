@@ -78,12 +78,12 @@ def listAllChats():
         message = {'text': chat.message, 'date': chat.date.strftime("%a %d-%b-%Y %H:%M:%S"), 'style': style}
         session['messages'].append(message)
     # Order the sessions by start date
-    orderedSessions = sorted(sesions, key=itemgetter('startDate'))
+    orderedSessions = sorted(sessions, key=itemgetter('startDate'))
     for index, session in enumerate(orderedSessions):
         session['startOrder'] = index
     # Order the sessions by most recent
-    mostrecentSessions = sorted(sesions, key=itemgetter('lastDate'))
-    for index, sesion in enumerate(mostrecentSessions):
+    mostrecentSessions = sorted(sessions, key=itemgetter('lastDate'))
+    for index, session in enumerate(mostrecentSessions):
         session['recentOrder'] = index
     # Return the ordered set
     return orderedSessions
