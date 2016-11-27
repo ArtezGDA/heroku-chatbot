@@ -14,11 +14,11 @@
       </div>
       <div class="page-header">
         <h1>Log of all chats</h1>
-		<h3>sort sessions by <a id="sort_by_start">startdate</a> &mdash; <a id="sort_by_recent">most recent</a></h3>
+		<h5>sort sessions by <a id="sort_by_start">startdate</a> &mdash; <a id="sort_by_recent">most recent</a></h5>
       </div>
       <div id="chat-log">
 		{% for session in logs %}
-		  <h2>Session: {{ session.id }} Started: {{ session.startDate }}, Last message: {{ session.lastDate }}</h2>
+		  <h4>Session: <code>{{ session.id }}</code> <em>Started:</em> {{ session.startDate }}<em>, Last message:</em> {{ session.lastDate }}</h4>
 		  <ul>
 			{% for message in session.messages %}
 			  <li>Date: {{ message.date }} <span class="{{ message.style }}">{{ message.text }}</span></li>
