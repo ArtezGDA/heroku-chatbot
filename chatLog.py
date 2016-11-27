@@ -4,7 +4,7 @@ import os
 import logging
 import datetime
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy, desc
 
 app = Flask(__name__)
 app.debug = 'DEBUG' in os.environ
