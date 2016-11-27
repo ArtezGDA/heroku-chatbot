@@ -41,7 +41,7 @@ def storeChat(session, actor, message):
     
 def listAllChats():
     """docstring for listAllChats"""
-    all_chats = Message.query.all()
+    all_chats = Message.query.order_by(desc(Message.date)).all()
     sessionIDs = []
     sessions = []
     # Organize per sessions
