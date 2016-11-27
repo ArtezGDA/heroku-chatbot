@@ -85,5 +85,8 @@ def listAllChats():
     mostrecentSessions = sorted(sessions, key=itemgetter('lastDate'))
     for index, session in enumerate(mostrecentSessions):
         session['recentOrder'] = index
-    # Return the ordered set
-    return orderedSessions
+    # Return the a dict of ordered set and total count
+    returnDict = {}
+    returnDict['sessions'] = orderedSessions
+    returnDict['count'] = len(all_chats)
+    return returnDict
