@@ -87,8 +87,10 @@ def hello():
 
 @app.route('/logs')
 def all_logs():
-    allLogs = listAllChats()
-    return render_template('logs.html', logs = allLogs)
+    logList = listAllChats()
+    loggedSessions = logList['sessions']
+    numberOfRows = logList['count']
+    return render_template('logs.html', logs = loggedSessions, totalNumberOfRows = numberOfRows)
 
 @sockets.route('/submit')
 def inbox(ws):
