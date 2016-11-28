@@ -88,5 +88,6 @@ def listAllChats():
     # Return the a dict of ordered set and total count
     returnDict = {}
     returnDict['sessions'] = orderedSessions
-    returnDict['count'] = len(all_chats)
+    returnDict['sessionCount'] = len(orderedSessions)
+    returnDict['chatCount'] = len(all_chats)
     return returnDict

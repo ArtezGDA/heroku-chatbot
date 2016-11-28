@@ -89,8 +89,9 @@ def hello():
 def all_logs():
     logList = listAllChats()
     loggedSessions = logList['sessions']
-    numberOfRows = logList['count']
-    return render_template('logs.html', logs = loggedSessions, totalNumberOfRows = numberOfRows)
+    numberOfRows = logList['chatCount']
+    numberOfSessions = logList['sessionCount']
+    return render_template('logs.html', logs = loggedSessions, totalNumberOfRows = numberOfRows, totalSessions = numberOfSessions)
 
 @sockets.route('/submit')
 def inbox(ws):
